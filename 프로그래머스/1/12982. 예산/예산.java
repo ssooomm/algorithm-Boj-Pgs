@@ -2,7 +2,7 @@ import java.util.*;
 
 class Solution {
     public int solution(int[] d, int budget) {
-        int answer = 0;
+        int answer = d.length;
         
         int d_sum = 0;
         Arrays.sort(d);
