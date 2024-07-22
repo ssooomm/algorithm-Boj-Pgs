@@ -1,0 +1,16 @@
+-- 코드를 작성해주세요
+select count(*) as Count
+from ECOLI_DATA 
+where GENOTYPE&2 =0 and (GENOTYPE&1>0 or GENOTYPE&4>0 )
+
+
+# SELECT COUNT(*) AS COUNT
+# FROM ECOLI_DATA 
+# WHERE (GENOTYPE&2) = 0 AND (GENOTYPE&1) = 1 AND (GENOTYPE&3) = 1
+
+# AND GENOTYPE IN ((GENOTYPE&1) = 1, (GENOTYPE&3) = 1)
+
+# SELECT COUNT(*)
+# FROM ECOLI_DATA
+# WHERE 
+# ()
