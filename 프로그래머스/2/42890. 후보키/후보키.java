@@ -3,50 +3,53 @@ import java.util.*;
 class Solution {
     public int solution(String[][] relation) {
         int answer = 0;
-        
-        int col = relation[0].length;
-        int row = relation.length;
         List<List<Integer>> res = new ArrayList<>();
+        int row = relation.length;
+        int col = relation[0].length;
         for(int i=1;i<=col;i++){
-            backtrack(col,i,0,new ArrayList<>(), res, relation);
+            backtrack(relation, col, i, 0, new ArrayList<>(), res);
         }
         return res.size();
     }
     
-    void backtrack(int n, int k, int st, List<Integer> curr, List<List<Integer>> res, String[][] relation){
-        if(curr.size()==k){
-            boolean hasCommon = false;
-            for(List<Integer> sub:res){
-                for(int num: sub){
-                    if(curr.contains(num)){
-                        hasCommon = true;
-                    }else{
-                        hasCommon = false;
+    void backtrack(String[][] relation, int n, int k, int st, List<Integer> cur,List<List<Integer>> res){
+        if(k==cur.size()){
+            boolean common = false;
+            for(List<Integer> l:res){
+                for(int next:l){
+                    if (cur.contains(next)) {
+                        common = true;
+                    }
+                    else{
+                        common = false;
                         break;
                     }
+                    // if(cur.contains(next)){
+                    //     common = true;
+                    //     break;
+                    // }
                 }
-                if(hasCommon) break;
+                if(common){break;}
             }
-            if(!hasCommon){
-                Set<String> set = new HashSet<>();
-                for(int j=0;j<relation.length;j++){
-                    String tmp = "";
-                    for(int i:curr){
-                        tmp += relation[j][i] + "_";
+            if(!common){
+                Set<String> tmp = new HashSet<>();
+                for(String[] r:relation){
+                    String str = "";
+                    for(int c:cur){
+                        str+=r[c]+"_";
                     }
-                    set.add(tmp);
+                    tmp.add(str);
                 }
-                if(set.size()==relation.length){
-                    res.add(new ArrayList<>(curr));
+                if(tmp.size()==relation.length){
+                    res.add(new ArrayList<>(cur));
                 }
             }
             return;
         }
-        
         for(int i=st;i<n;i++){
-            curr.add(i);
-            backtrack(n,k,i+1,curr,res,relation);
-            curr.remove(curr.size()-1);
+            cur.add(i);
+            backtrack(relation, n, k, i+1, cur, res);
+            cur.remove(cur.size()-1);
         }
     }
 }
