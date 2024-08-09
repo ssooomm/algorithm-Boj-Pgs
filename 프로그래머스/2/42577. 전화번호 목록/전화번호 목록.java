@@ -1,21 +1,19 @@
-import java.util.HashMap;
+import java.util.*;
 
 class Solution {
     public boolean solution(String[] phone_book) {
         boolean answer = true;
+        Arrays.sort(phone_book);
         
-        HashMap<String, Integer> map = new HashMap<>();
-        for(String phone: phone_book) {
-            map.put(phone, 1);
-        }
-        
-        for(String phone: phone_book) {
-            for(int i=0;i<phone.length();i++){
-                if(map.containsKey(phone.substring(0,i))){
-                    answer = false;
-                    break;
-                }
+        Set<String> pset = new HashSet<>();
+        for(String p:phone_book){
+            String tmp="";
+            for(String sub:p.split("")){
+                tmp+=sub;
+                if(pset.contains(tmp)) return false;
             }
+            
+            pset.add(p);
         }
         return answer;
     }
