@@ -10,8 +10,7 @@ class Solution {
         for(String s:arr){
             for(int i=0;i<mos.length;i++){
                 if(s.equals(mos[i])){
-                    char ch = (char)(97+i);
-                    answer+=ch+"";
+                    answer+=(char)(97+i);
                 }
             }
         }
