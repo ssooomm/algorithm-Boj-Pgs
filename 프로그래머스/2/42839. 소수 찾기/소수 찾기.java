@@ -5,8 +5,8 @@ class Solution {
     
     public int solution(String numbers) {
         int answer = 0;
-
-        permutation(numbers,0,0,new boolean[numbers.length()]);
+        
+        permutation(numbers,new boolean[numbers.length()],0,0);
         
         for(int c:candi){
             if(isPrime(c)) answer++;
@@ -14,15 +14,16 @@ class Solution {
         return answer;
     }
     
-    void permutation(String numbers,int cur, int digit, boolean[] visited){
-        if(digit==numbers.length()) return;
+    public void permutation(String numbers, boolean[] visited, int cur, int digit){
+        if(digit==numbers.length()){
+            return;
+        }
         for(int i=0;i<numbers.length();i++){
             if(!visited[i]){
-                
-                int cost = cur + (int)((numbers.charAt(i)-'0')*Math.pow(10,digit));
-                candi.add(cost);
                 visited[i] = true;
-                permutation(numbers,cost,digit+1,visited);
+                int next = cur + (int)((numbers.charAt(i)-'0')*Math.pow(10,digit));
+                candi.add(next);
+                permutation(numbers,visited,next,digit+1);
                 visited[i] = false;
             }
         }
