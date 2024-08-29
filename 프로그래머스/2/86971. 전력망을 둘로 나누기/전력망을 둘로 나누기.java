@@ -7,36 +7,28 @@ class Solution {
         for(int i=1;i<=n;i++){
             graph.put(i,new ArrayList<>());
         }
-        for(int[] w:wires){
-            graph.get(w[0]).add(w[1]);
-            graph.get(w[1]).add(w[0]);
+        for(int[] wire:wires){
+            graph.get(wire[0]).add(wire[1]);
+            graph.get(wire[1]).add(wire[0]);
         }
         
         for(int[] w:wires){
-            // boolean[] v1= new boolean[n+1];
-            // v1[w[1]] = true;
-            // int n1 = bfs(w[0],w[1],n,graph,v1);
-            boolean[] v1= new boolean[n+1];
-            v1[w[1]] = true;
-            int n1 = bfs(v1, graph,w[0]);
-            
-            // boolean[] v2= new boolean[n+1];
-            // v2[w[0]] = true;
-            // int n2 = bfs(v2,graph,w[1]);
-            
-            answer = Math.min(answer,Math.abs(n-2*n1));
+            int a = bfs(w[0],w[1],n,graph);
+            answer = Math.min(answer,Math.abs(n-(2*a)));
         }
         return answer;
     }
     
-    int bfs(boolean[] visited,Map<Integer,List<Integer>> graph, int st){
+    int bfs(int e, int pass, int n, Map<Integer,List<Integer>> graph){
         Queue<Integer> q = new ArrayDeque<>();
-        q.add(st);
-        visited[st] = true;
+        q.add(e);
+        boolean[] visited = new boolean[n+1];
+        visited[e] = true;
+        visited[pass] = true;
         int cnt = 1;
         while(!q.isEmpty()){
-            int target = q.remove();
-            for(int next:graph.get(target)){
+            int cur = q.remove();
+            for(int next:graph.get(cur)){
                 if(!visited[next]){
                     visited[next] = true;
                     q.add(next);
