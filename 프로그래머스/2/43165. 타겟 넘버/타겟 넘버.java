@@ -1,15 +1,17 @@
 class Solution {
     public int solution(int[] numbers, int target) {
-        return dfs(numbers,target,0,0);
+        return backtrack(0,0,numbers,target);
     }
-    int dfs(int[] numbers,int target, int cur, int tmp){
-        if(cur==numbers.length){
-            if(target==tmp) return 1;
+    
+    public int backtrack(int cur, int idx, int[] numbers, int target){
+        if(idx==numbers.length){
+            if(cur==target) return 1;
             else return 0;
         }
-        int sum=0;
-        sum+=dfs(numbers,target,cur+1,tmp+numbers[cur]);
-        sum+=dfs(numbers,target,cur+1,tmp-numbers[cur]);
+        
+        int sum = 0;
+        sum += backtrack(cur+numbers[idx],idx+1,numbers,target);
+        sum += backtrack(cur-numbers[idx],idx+1,numbers,target);
         return sum;
     }
 }
