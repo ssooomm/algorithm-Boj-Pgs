@@ -1,52 +1,43 @@
 import java.util.*;
+
 class Solution {
     public int solution(String s) {
         int answer = 0;
+        int len = s.length();
         
-        Queue<String> q = new LinkedList<String>();
-        String[] sArr = s.split("");
-        for(String i:sArr){
-            q.add(i);
-        }
-
-                Stack<String> st = new Stack<>();
-        for(int a=0;a<q.size();a++){
-            String first = q.peek();
-            if(first.equals("[")||first.equals("{")||first.equals("(")){
-                for(String i:q){
-                    if(i.equals("[")||i.equals("{")||i.equals("(")){
-                        st.push(i);
-                    }
-                    else if(st.isEmpty()){
-                        continue;
-                    }
-                    if(i.equals("]")){
-                        String tmp = st.peek();
-                        if(tmp.equals("[")){
-                            st.pop();
-                        }
-                    }
-                    else if(i.equals("}")){
-                        String tmp = st.peek();
-                        if(tmp.equals("{")){
-                            st.pop();
-                        }
-                    }
-                    else if(i.equals(")")){
-                        String tmp = st.peek();
-                        if(tmp.equals("(")){
-                            st.pop();
-                        }
-                    }
-                }
-                if(st.isEmpty()){
-                    answer++;
-                }
-                st.clear();
+        String ext = s+s;
+        
+        for(int i=0;i<ext.length()-len;i++){
+            if(isStack(ext.substring(i,i+len))){
+                answer++;
             }
-            String tmp = q.poll();
-            q.add(tmp);
         }
         return answer;
     }
+
+    public boolean isStack(String str){
+        char[] arr = str.toCharArray();
+        Deque<Character> stack = new ArrayDeque<>();
+        for(int j=0;j<arr.length;j++){
+            if(arr[j]=='('||arr[j]=='['||arr[j]=='{'){
+                stack.push(arr[j]);
+            }else{
+                if(stack.isEmpty()) return false;
+
+                if(arr[j]==')'&&stack.peek()=='('){
+                    stack.pop();
+                }
+                else if(arr[j]=='}'&&stack.peek()=='{'){
+                    stack.pop();
+                }
+                else if(arr[j]==']'&&stack.peek()=='['){
+                    stack.pop();
+                }
+                else return false;
+            }
+        }
+        return stack.isEmpty();
+        
+    }
+    
 }
