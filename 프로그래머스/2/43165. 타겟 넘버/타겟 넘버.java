@@ -1,24 +1,25 @@
+import java.util.*;
+
 class Solution {
-    static int count;
-    static int N;
     public int solution(int[] numbers, int target) {
-        count = 0;
-        N = numbers.length;
         
-        dfs(0,0,numbers,target);
-        return count;
-    }
-    public void dfs(int depth, int tot, int[] numbers, int target){
-        if(depth==N){
-            //로직
-            if(tot==target){
-                count++;
-            }
-            return;
-        }
-        dfs(depth+1,tot+numbers[depth],numbers,target);
-        dfs(depth+1,tot-numbers[depth],numbers,target);
         
+        
+        
+        return dfs(0,0,numbers,target);
     }
     
+    int dfs(int curr, int idx, int[] numbers, int target){
+        if(idx==numbers.length){
+            if(curr==target){
+                return 1;
+            }
+            return 0;
+        }
+        
+        int cnt=0;
+        cnt += dfs(curr+numbers[idx], idx+1, numbers,target);
+        cnt += dfs(curr-numbers[idx], idx+1, numbers,target);
+        return cnt;
+    }
 }
