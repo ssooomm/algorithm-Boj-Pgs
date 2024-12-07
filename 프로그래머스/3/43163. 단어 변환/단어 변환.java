@@ -1,9 +1,9 @@
 import java.util.*;
 
-class WordState{
+class WS{
     int cnt;
     String word;
-    public WordState(int cnt, String word){
+    WS(int cnt, String word){
         this.cnt = cnt;
         this.word = word;
     }
@@ -11,28 +11,30 @@ class WordState{
 class Solution {
     public int solution(String begin, String target, String[] words) {
         int answer = 0;
-        Queue<WordState> q = new ArrayDeque<>();
-        q.add(new WordState(0,begin));
+        
         boolean[] visited = new boolean[words.length];
+        Queue<WS> q = new ArrayDeque<>();
+        q.add(new WS(0,begin));
+        
         
         while(!q.isEmpty()){
-            WordState cur = q.remove();
-            if(cur.word.equals(target)) return cur.cnt;
+            WS curr = q.remove();
+            if(curr.word.equals(target)) return curr.cnt;
             for(int i=0;i<words.length;i++){
-                if(!visited[i] && getDiff(cur.word, words[i])==1){
+                if(!visited[i]&&getDiff(curr.word,words[i])==1){
+                    q.add(new WS(curr.cnt+1, words[i]));
                     visited[i] = true;
-                    q.add(new WordState(cur.cnt+1,words[i]));
                 }
             }
         }
         return answer;
     }
     
-    int getDiff(String cur, String target){
-        int answer = 0;
-        for(int i=0;i<cur.length();i++){
-            if(cur.charAt(i)!=target.charAt(i)) answer++;
+    public int getDiff(String target, String com){
+        int cnt=0;
+        for(int i=0;i<target.length();i++){
+            if(target.charAt(i)!=com.charAt(i)) cnt++;
         }
-        return answer;
+        return cnt;
     }
 }
