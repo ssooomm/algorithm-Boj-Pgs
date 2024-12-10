@@ -1,48 +1,46 @@
 import java.util.*;
 
 class Solution {
-    int m = 5;
-    int[] dr = {1,-1,0,0};
-    int[] dc = {0,0,1,-1};
+    int[] dr = {0,0,1,-1};
+    int[] dc = {1,-1,0,0};
     public int[] solution(String[][] places) {
-        int[] answer = new int[m];
-        for(int i=0;i<m;i++){
-            if(check(places[i])) answer[i] = 1;
+        int n = places.length;
+        int[] answer = new int[n];
+        for(int i=0;i<n;i++){
+            answer[i] = check(places[i]);
         }
         return answer;
     }
     
-    boolean check(String[] place){
-        for(int r=0;r<m;r++){
-            for(int c=0;c<m;c++){
+    int check(String[] place){
+        for(int r=0;r<5;r++){
+            for(int c=0;c<5;c++){
                 if(place[r].charAt(c)=='P'){
-                    if(!bfs(r,c,place))  
-                        return false;
+                    if(!bfs(r,c,place)) return 0;
                 }
-            } 
+            }
         }
-        return true;
+        return 1;
     }
     
-    boolean bfs(int r, int c, String[] place){
-        boolean[][] visited = new boolean[m][m];
+    
+    boolean bfs(int i, int j, String[] place){
+        boolean[][] visited = new boolean[5][5];
         Queue<int[]> q = new ArrayDeque<>();
-        q.add(new int[]{r,c,0});
-        visited[r][c] = true;
+        q.add(new int[]{i,j,0});
+        visited[i][j] = true;
+        
         
         while(!q.isEmpty()){
-            int[] cur = q.remove();
-            int row = cur[0];
-            int col = cur[1];
-            int d = cur[2];
-            for(int i=0;i<4;i++){
-                int nr = row+dr[i];
-                int nc = col+dc[i];
-                int nd = d+1;
-                if(nr>=0&&nr<m&&nc>=0&&nc<m){
-                    if(!visited[nr][nc] && place[nr].charAt(nc) !='X'){
-                        if(nd>2) continue;
-                        //거리가 2이하인데 응시자 있으면 
+            int[] curr = q.remove();
+            if(curr[2]>=2) continue;
+            
+            for(int x=0;x<4;x++){
+                int nr = curr[0] + dr[x];
+                int nc = curr[1] + dc[x];
+                int nd = curr[2] + 1;
+                if(nr>=0&&nr<5&&nc>=0&&nc<5){
+                    if(place[nr].charAt(nc) != 'X' && !visited[nr][nc]){
                         if(place[nr].charAt(nc)=='P') return false;
                         q.add(new int[]{nr,nc,nd});
                         visited[nr][nc] = true;
@@ -50,8 +48,7 @@ class Solution {
                 }
             }
         }
-        
-        //bfs완료는 거리두기 준수
         return true;
+        
     }
 }
