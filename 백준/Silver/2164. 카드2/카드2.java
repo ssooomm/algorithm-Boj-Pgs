@@ -1,22 +1,18 @@
 import java.util.*;
 
-public class Main {
-    public static void main(String[] args) {
+public class Main{
+    public static void main(String[] args){
         Scanner sc = new Scanner(System.in);
-        int N = sc.nextInt();
-
-        Queue<Integer> q = new LinkedList<>();
-
-        for(int i = 0; i < N; i++) {
-            q.add(i+1);
+        int n = sc.nextInt();
+        Deque<Integer> dq = new ArrayDeque<>();
+        for(int i=1;i<=n;i++){
+            dq.add(i);
         }
-
-        while(q.size()>=2){
-            q.poll();
-            int tmp = q.poll();
-            q.add(tmp);
+        
+        while(dq.size()>1){
+            dq.removeFirst();
+            dq.addLast(dq.removeFirst());
         }
-
-        System.out.println(q.poll());
+        System.out.println(dq.remove());
     }
 }
