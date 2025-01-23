@@ -1,39 +1,37 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.util.*;
 
-public class Main {
-    public static int[] arr;
-    public static boolean[] visit;
-
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        int N = Integer.parseInt(st.nextToken());
-        int M = Integer.parseInt(st.nextToken());
-
-        arr = new int[M];
-        visit = new boolean[N];
-        dfs(N, M, 0);
-
-    }
-
-    public static void dfs(int N, int M, int depth) {
-        if(depth == M) {
-            for (int val : arr) {
-                System.out.print(val+" ");
+public class Main{
+    static List<List<Integer>> res = new ArrayList<>();
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int m = sc.nextInt();
+        
+        boolean[] visited = new boolean[n+1];
+        backtrack(n,m,new ArrayList<>(), visited);
+        
+        StringBuilder sb = new StringBuilder();
+        for(List<Integer> list: res){
+            for(int i=0;i<m;i++){
+                sb.append(list.get(i)+" ");
             }
-            System.out.println();
+            sb.append("\n");
+        }
+        System.out.println(sb);
+    }
+    
+    static void backtrack(int n, int m, List<Integer> list, boolean[] visited){
+        if(list.size()==m){
+            res.add(new ArrayList<>(list));
             return;
         }
-        for(int i = 0; i < N; i++) {
-            if (visit[i] == false) {
-                visit[i] = true;
-                arr[depth] = i+1;
-                dfs(N,M,depth+1);
-
-                visit[i] = false;
+        for(int i=1;i<=n;i++){
+            if(!visited[i]){
+                list.add(i);
+                visited[i] = true;
+                backtrack(n,m,list,visited);
+                visited[i] = false;
+                list.remove(list.size()-1);
             }
         }
     }
