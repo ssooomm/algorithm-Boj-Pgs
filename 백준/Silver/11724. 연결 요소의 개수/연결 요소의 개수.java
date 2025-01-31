@@ -1,53 +1,46 @@
 import java.util.*;
+import java.io.*;
 
-public class Main {
-	
-	static int[][] graph = new int[1001][1001];
-	static int V;
-	static int E;
-	static boolean[] visited = new boolean[1001];
-	
-	public static void dfs(int index) {
-		if(visited[index] == true)
-			return;
-		else {
-			visited[index] = true;
-			for(int i = 1; i <= V; i++) {
-				if(graph[index][i] == 1) {
-					dfs(i);
-				}
-			}
-		}
-	}
-	
-	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in); 
-		
-		V = sc.nextInt();
-		E = sc.nextInt();
-		
-		int a,b;
-		for(int i = 0; i < E; i++) {
-			a = sc.nextInt();
-			b = sc.nextInt();
-			
-			// 간선 연결
-			graph[a][b] = graph[b][a] = 1;
-		}
-		
-		int result = 0 ;
-		
-		// dfs 탐색
-		for(int i = 1; i <= V; i++) {
-			if(visited[i] == false) { // 방문한 적 없는 노드라면 dfs.
-				dfs(i);
-				result++;
-			}
-		}
-		
-		System.out.println(result);
-		
-		sc.close();
-		return;
-	}
+public class Main{
+    static int cnt=0;
+    static boolean[] visited;
+    public static void main(String[] args)throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int n = Integer.parseInt(st.nextToken());
+        int m = Integer.parseInt(st.nextToken());
+
+        List<List<Integer>> list = new ArrayList<>();
+        for(int i=0;i<=n;i++){
+            list.add(new ArrayList<>());
+        }
+        for(int i=0;i<m;i++){
+            st = new StringTokenizer(br.readLine());
+            int u = Integer.parseInt(st.nextToken());
+            int v = Integer.parseInt(st.nextToken());
+            list.get(u).add(v);
+            list.get(v).add(u);
+        }
+
+        visited = new boolean[n+1];
+        for(int x=1;x<=n;x++){
+            if(!visited[x]){
+                cnt++;
+                visited[x] = true;
+                dfs(list,list.get(x));
+            }
+        }
+
+        System.out.println(cnt);
+    }
+
+    static void dfs(List<List<Integer>> list, List<Integer> tmp){
+
+        for(int i:tmp){
+            if(!visited[i]){
+                visited[i] = true;
+                dfs(list,list.get(i));
+            }
+        }
+    }
 }
