@@ -14,24 +14,24 @@ public class Main{
             return this.cost - o.cost;
         }
     }
-    static int n;
+
     static List<Edge>[] list;
+    static int n;
     static int[] dist, conn;
     public static void main(String[] args){
         Scanner sc = new Scanner(System.in);
         n = sc.nextInt();
         int m = sc.nextInt();
 
-
-        dist = new int[n+1];
-        Arrays.fill(dist, Integer.MAX_VALUE);
-
+        // 1~n까지 저장
         conn = new int[n+1];
-
+        dist = new int[n+1];
+        Arrays.fill(dist,Integer.MAX_VALUE);
         list = new ArrayList[n+1];
         for(int i=0;i<=n;i++){
-            list[i] = new ArrayList<Edge>();
+            list[i] = new ArrayList<>();
         }
+
         for(int i=0;i<m;i++){
             int a = sc.nextInt();
             int b = sc.nextInt();
@@ -42,8 +42,8 @@ public class Main{
         }
 
         djks();
-        int cnt = 0;
 
+        int cnt = 0;
         StringBuilder sb = new StringBuilder();
         for(int i=2;i<=n;i++){
             if(conn[i]!=0){
@@ -53,23 +53,24 @@ public class Main{
         }
         System.out.println(cnt);
         System.out.println(sb);
+
     }
 
     static void djks(){
-
         dist[1] = 0;
         PriorityQueue<Edge> pq = new PriorityQueue<>();
         pq.add(new Edge(1,0));
         while(!pq.isEmpty()){
-            Edge edge = pq.poll();
+            Edge now = pq.poll();
 
-            if(edge.cost > dist[edge.node]) continue;
+            if(now.cost > dist[now.node]) continue;
 
-            for(Edge e:list[edge.node]){
-                if(dist[e.node]>e.cost+edge.cost){
-                    dist[e.node] = e.cost+edge.cost;
-                    conn[e.node] = edge.node;
-                    pq.add(new Edge(e.node,dist[e.node]));
+            for(Edge e:list[now.node]){
+                int newDist = e.cost + now.cost;
+                if(dist[e.node]>newDist){
+                    dist[e.node] = newDist;
+                    pq.add(new Edge(e.node, newDist));
+                    conn[e.node] = now.node;
                 }
             }
         }
