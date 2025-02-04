@@ -57,16 +57,21 @@ public class Main{
     }
 
     static void djks(){
+        // 1 = 슈퍼 컴
         dist[1] = 0;
         PriorityQueue<Edge> pq = new PriorityQueue<>();
         pq.add(new Edge(1,0));
+        
         while(!pq.isEmpty()){
             Edge now = pq.poll();
-
+            
+            // 이미 저장된 거리보다 새로운 거리가 크면 더 이상 볼 필요x
             if(now.cost > dist[now.node]) continue;
-
+            
             for(Edge e:list[now.node]){
                 int newDist = e.cost + now.cost;
+                
+                //연결된 요소들의 거리 모두 확인해서 최소 거리 찾기
                 if(dist[e.node]>newDist){
                     dist[e.node] = newDist;
                     pq.add(new Edge(e.node, newDist));
