@@ -1,24 +1,30 @@
-import java.util.Scanner;
+import java.util.*;
 
-public class Main {
-    public static void main(String[] args) {
+public class Main{
+    public static void main(String[] args){
         Scanner sc = new Scanner(System.in);
-        int N = sc.nextInt();
-
-        int arr[] = new int[N];
-        int s_i = 1, e_i = 1, sum=1, cnt=1;
-
-        while(s_i<N){
-            if(sum>N){
-                sum -= s_i;
-                s_i ++;
-            }else if(sum<N){
-                e_i++;
-                sum += e_i;
-            }else{
-                e_i++;
-                sum +=e_i;
+        int n = sc.nextInt();
+        
+        if(n<3){
+            System.out.println(1);
+            return;
+        }
+        
+        int cnt = 1, st=1,end=2,sum=3;
+        
+        while(st<end){
+            if(sum==n){
                 cnt++;
+                sum-=st;
+                st++;
+            }
+            while(sum>n){
+                sum-=st;
+                st++;
+            }
+            while(sum<n){
+                end++;
+                sum+=end;
             }
         }
         System.out.println(cnt);
