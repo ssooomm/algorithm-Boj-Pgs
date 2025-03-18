@@ -1,23 +1,16 @@
-import java.util.Scanner;
+import java.util.*;
 
-public class Main {
-    public static void main(String[] args) {
+public class Main{
+    public static void main(String[] args){
         Scanner sc = new Scanner(System.in);
-        int N = sc.nextInt();
-
-        int i = N;
-        int cnt = 0;
-
-        while(i>0){
-            if(i>3){
-                i-=3;
-                cnt++;
-            }
-            else{
-                i-=1;
-                cnt++;
-            }
+        int n = sc.nextInt();
+        int x = n/3;
+        if(x%2==0){
+            if(n%3==1) System.out.println("SK");
+            else System.out.println("CY");
+        }else{
+            if(n%3==1) System.out.println("CY");
+            else System.out.println("SK");
         }
-        System.out.println(cnt%2==0?"CY":"SK");
     }
 }
