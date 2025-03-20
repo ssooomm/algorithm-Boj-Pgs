@@ -21,7 +21,7 @@ public class Main{
                 }
             }
         }
-        sb.append((x+1)+" "+(y+1)+"\n");
+        sb.append((x+1)+" "+(y+1)+"\n"); //(1,1)부터 시작이므로 출력시 +1 해주기
 
         int cnt=0;
         for(int i=y-1;i>=0;i--){
