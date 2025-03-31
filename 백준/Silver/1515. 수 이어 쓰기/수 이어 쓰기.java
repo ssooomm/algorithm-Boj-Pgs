@@ -8,7 +8,8 @@ public class Main{
         int pt = 0;
         int base = 0;
         
-        while(base++<=30000){
+        while(true){
+            base++;
             String tmp = String.valueOf(base); 
             for(int i=0;i<tmp.length();i++){ //10 -> 1,0
                 if(tmp.charAt(i)==str.charAt(pt)) pt++;
