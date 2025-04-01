@@ -22,8 +22,6 @@ public class Main{
         }
         
         for(int i=1;i<n;i++){
-            dp[i][0][0] = Integer.MAX_VALUE;
-            dp[i][m-1][2] = Integer.MAX_VALUE;
             for(int j=0;j<m;j++){
                 if(j==0){ //젤 왼쪽
                     dp[i][j][0] = Math.min(dp[i-1][j+1][1],dp[i-1][j+1][2])+arr[i][j];
