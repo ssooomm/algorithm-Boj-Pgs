@@ -1,10 +1,12 @@
 -- 코드를 입력하세요
 SELECT CATEGORY,PRICE AS MAX_PRICE,PRODUCT_NAME
 FROM FOOD_PRODUCT 
-WHERE (CATEGORY, PRICE) IN (
+WHERE (CATEGORY, PRICE) IN ( 
+    # 서브쿼리에서 카테고리별 최고 가격 구하기 
     SELECT CATEGORY,MAX(PRICE)
     FROM FOOD_PRODUCT
     GROUP BY CATEGORY
 )
+# 메인쿼리에서 최고 가격 만족하는 상품 찾기 
 AND CATEGORY IN ('과자', '국', '김치', '식용유')
 ORDER BY PRICE DESC;
