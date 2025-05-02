@@ -6,8 +6,8 @@ public class Main{
     public static void main(String[] args)throws IOException{
         int n = Integer.parseInt(br.readLine());
         StringTokenizer st = new StringTokenizer(br.readLine());
-        int[] len = new int[n-1];
-        int[] cost = new int[n];
+        long[] len = new long[n-1];
+        long[] cost = new long[n];
         for(int i=0;i<n-1;i++){
             len[i] = Integer.parseInt(st.nextToken());
         }
@@ -16,8 +16,8 @@ public class Main{
             cost[i] = Integer.parseInt(st.nextToken());
         }
         
-        int sum = 0;
-        int min = Integer.MAX_VALUE;
+        long sum = 0;
+        long min = Integer.MAX_VALUE;
         for(int i=0;i<n-1;i++){
             min = Math.min(min,cost[i]);
             sum+=min*len[i];
