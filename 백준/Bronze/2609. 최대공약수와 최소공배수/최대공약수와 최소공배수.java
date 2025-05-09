@@ -7,10 +7,8 @@ public class Main{
         int b = sc.nextInt();
         int m = gcd(a,b);
         
-        int ma = a/m;
-        int mb = b/m;
         System.out.println(m);
-        System.out.println(m*ma*mb);
+        System.out.println(a*b/m);
     }
     static int gcd(int a, int b){
         int m = a%b;
