@@ -1,34 +1,31 @@
 import java.util.*;
 
 class Solution {
-    int[] dr = {0,0,1,-1};
-    int[] dc = {1,-1,0,0};
+    static int[] dx = {0,0,1,-1};
+    static int[] dy = {1,-1,0,0};
     
     public int solution(int[][] maps) {
-        int answer = -1;
+        int answer = 0;
         int n = maps.length;
         int m = maps[0].length;
         boolean[][] visited = new boolean[n][m];
-        
         Queue<int[]> q = new ArrayDeque<>();
         q.add(new int[]{0,0,1});
         visited[0][0] = true;
-        
         while(!q.isEmpty()){
-            int[] curr = q.remove();
-            if(curr[0]==n-1 && curr[1]==m-1) return curr[2];
+            int[] cur = q.remove();
+            if(cur[0]==n-1 && cur[1] ==m-1) return cur[2];
             for(int i=0;i<4;i++){
-                int nr = curr[0] + dr[i];
-                int nc = curr[1] + dc[i];
-                
-                if(nr>=0 && nr<n && nc>=0 && nc<m){
-                    if(maps[nr][nc]==1 && !visited[nr][nc]){
-                        q.add(new int[]{nr,nc, curr[2]+1});
-                        visited[nr][nc] = true;
+                int nx = cur[0] + dx[i];
+                int ny = cur[1] + dy[i];
+                if(nx>=0&&nx<n&&ny>=0&&ny<m){
+                    if(maps[nx][ny]==1&&!visited[nx][ny]){
+                        q.add(new int[]{nx,ny,cur[2]+1});
+                        visited[nx][ny] = true;
                     }
                 }
             }
         }
-        return answer;
+        return -1;
     }
 }
