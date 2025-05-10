@@ -1,34 +1,39 @@
 import java.util.*;
 
 class Solution {
-    Set<Integer> hs = new HashSet<>();
+    static Set<Integer> set = new HashSet<>();
+    static char[] arr;
+    static boolean[] visited;
     public int solution(String numbers) {
         int answer = 0;
-        perm(numbers, new boolean[numbers.length()],0,0);
-        for(Integer n:hs){
-            System.out.println(n);
-            if(isPrime(n)) answer++;
+        arr = numbers.toCharArray();
+        visited = new boolean[arr.length];
+        
+        backtrack(0,0);
+        for(int x:set){
+            if(isPrime(x)) answer++;
         }
         return answer;
     }
-    void perm(String numbers, boolean[] visited, int curr, int digits){
-        if(digits==numbers.length()) return;
+    
+    public void backtrack(int len,int val){
+        if(len==arr.length){
+            return;
+        }
         
-        for(int i=0;i<numbers.length();i++){
+        for(int i=0;i<arr.length;i++){
             if(!visited[i]){
-                int newVal = curr+(int)((numbers.charAt(i)-'0')*Math.pow(10,digits));
-            hs.add(newVal);
-            
-            visited[i] = true;
-            perm(numbers,visited,newVal,digits+1);
-            visited[i] = false;
+                int newVal = val + (int)((arr[i]-'0')*Math.pow(10,len));
+                set.add(newVal);
+                visited[i] = true;
+                backtrack(len+1,newVal);
+                visited[i] = false;
             }
-            
         }
     }
     
-    boolean isPrime(int n){
-        if(n<2) return false;
+    public boolean isPrime(int n){
+        if(n==1 || n==0) return false;
         int tmp = (int)Math.sqrt(n);
         for(int i=2;i<=tmp;i++){
             if(n%i==0) return false;
