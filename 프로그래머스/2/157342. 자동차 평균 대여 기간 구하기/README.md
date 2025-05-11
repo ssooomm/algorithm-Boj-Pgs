@@ -1,6 +1,6 @@
 # [level 2] 자동차 평균 대여 기간 구하기 - 157342 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/157342?language=oracle) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/157342) 
 
 ### 성능 요약
 
@@ -16,7 +16,7 @@ Empty
 
 ### 제출 일자
 
-2025년 05월 03일 00:00:41
+2025년 05월 11일 11:13:03
 
 ### 문제 설명
 
