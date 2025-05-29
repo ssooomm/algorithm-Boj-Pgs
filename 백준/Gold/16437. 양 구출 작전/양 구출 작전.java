@@ -1,51 +1,44 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
+import java.util.*;
+import java.io.*;
 
-public class Main {
-
-	static List<Integer>[] list; 
-	static long[] memo;
-	public static void main(String[] args) throws IOException{
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		int n = Integer.parseInt(br.readLine());
-		
-		list = new ArrayList[n+1];
-		for(int i=1; i<n+1; i++) {
-			list[i] = new ArrayList<>();
-		}
-		memo = new long[n+1];
-		StringTokenizer st;
-		for(int i=2; i<n+1; i++) {
-			st = new StringTokenizer(br.readLine());
-			
-			char c = st.nextToken().charAt(0);
-			int a = Integer.parseInt(st.nextToken());
-			int p = Integer.parseInt(st.nextToken());
-			
-			list[p].add(i);
-			if(c=='W') {
-				a *= -1;
-			}
-			memo[i] = a;
-		}
-		
-		dfs(1,-1);
-		System.out.println(memo[1]);
-	}
-	
-	static void dfs(int idx, int pa) {
-		for(int nxt : list[idx]) {
-			dfs(nxt, idx);
-		}
-		
-		if(pa != -1) {
-			if(memo[idx]>0) {
-				memo[pa] += memo[idx];
-			}
-		}
-	}
+public class Main{
+    static List<List<Integer>> graph;
+    static long[] dp;
+    public static void main(String[] args)throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
+        int n = Integer.parseInt(br.readLine());
+        dp = new long[n+1];
+        graph = new ArrayList<>();
+        for(int i=0;i<=n;i++){
+            graph.add(new ArrayList<>());
+        }
+        
+        for(int i=2;i<=n;i++){
+            st = new StringTokenizer(br.readLine());
+            char t = st.nextToken().charAt(0);
+            int a = Integer.parseInt(st.nextToken());
+            int p = Integer.parseInt(st.nextToken());
+            
+            graph.get(p).add(i);
+            if(t=='W'){
+                dp[i] = a*(-1);
+            }
+            else dp[i] = a;
+        }
+        
+        dfs(1,-1);
+        System.out.println(dp[1]);
+    }
+    
+    static void dfs(int i, int p){
+        for(int n:graph.get(i)){
+            dfs(n,i);
+        }
+        if(p!=-1){
+            if(dp[i]>0){
+                dp[p]+=dp[i];
+            }
+        }
+    }
 }
