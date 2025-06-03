@@ -2,20 +2,20 @@ import java.util.*;
 import java.io.*;
 
 public class Main{
-    static int[] pt; // 부모 저장 
+    static int[] p;
     static class Node implements Comparable<Node>{
         int to;
         int from;
-        int c;
-        public Node(int to, int from,int c){
-            this.to=to;
+        int v;
+        public Node(int to, int from, int v){
+            this.to = to;
             this.from = from;
-            this.c=c;
+            this.v = v;
         }
-
+        
         @Override
-        public int compareTo(Node n){
-            return this.c-n.c;
+        public int compareTo(Node o){
+            return this.v-o.v;
         }
     }
     public static void main(String[] args)throws IOException{
@@ -23,11 +23,6 @@ public class Main{
         StringTokenizer st = new StringTokenizer(br.readLine());
         int v = Integer.parseInt(st.nextToken());
         int e = Integer.parseInt(st.nextToken());
-        
-        pt = new int[v+1];
-        for(int i=1;i<=v;i++){
-            pt[i] = i;
-        }
         
         Queue<Node> pq = new PriorityQueue<>();
         for(int i=0;i<e;i++){
@@ -38,23 +33,27 @@ public class Main{
             pq.add(new Node(a,b,c));
         }
         
-        int res=0;
+        p = new int[v+1];
+        for(int i=1;i<=v;i++){
+            p[i] = i; // 각 노드 초기화는 자기 자신이 root
+        }
+        
+        int res = 0;
         while(!pq.isEmpty()){
             Node cur = pq.poll();
             int to = find(cur.to);
             int from = find(cur.from);
             if(to!=from){
-                res += cur.c;
-                pt[from] = to;
+                res+=cur.v;
+                p[from] = to;
             }
         }
-       System.out.println(res);
+        
+        System.out.println(res);
     }
     
-    //부모 노드 찾기
-    static int find(int a){
-        if(pt[a]==a) return a;
-        return pt[a] = find(pt[a]); //pt값 갱신하면서 경로 압축 
+    static int find(int x){
+        if(p[x]==x) return x;
+        else return p[x] = find(p[x]);
     }
-    
 }
