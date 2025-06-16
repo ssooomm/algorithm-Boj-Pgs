@@ -1,32 +1,27 @@
 import java.util.*;
+import java.io.*;
 
 public class Main{
-    public static void main(String[] args){
-        Scanner sc = new Scanner(System.in);
-        int N = sc.nextInt();
-        int K = sc.nextInt();
-        
-        // 집중국이 센서보다 수가 많으면 거리는 무조건 0
-        if(N<=K){
-            System.out.println(0);
-            return;
-        }
-        
-        int[] arr = new int[N];
-        for(int i=0;i<N;i++){
-            arr[i] = sc.nextInt();
+    public static void main(String[] args)throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.parseInt(br.readLine());
+        int k = Integer.parseInt(br.readLine());
+        int[] arr = new int[n];
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        for(int i=0;i<n;i++){
+            arr[i] = Integer.parseInt(st.nextToken());
         }
         Arrays.sort(arr);
+        int[] dif = new int[n-1];
+        for(int i=0;i<n-1;i++){
+            dif[i] = arr[i+1]-arr[i];
+        }
+        Arrays.sort(dif);
         
-        int[] diff = new int[N];
-        for(int i=1,j=0;i<N;i++,j++){
-            diff[j] = arr[i] - arr[i-1];
+        int res=0;
+        for(int i=0;i<n-k;i++){
+            res+=dif[i];
         }
-        Arrays.sort(diff);
-        int min = 0;
-        for(int i=0;i<=N-K;i++){
-            min+=diff[i];
-        }
-        System.out.println(min);
+        System.out.println(res);
     }
 }
