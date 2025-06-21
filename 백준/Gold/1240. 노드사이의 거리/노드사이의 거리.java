@@ -1,59 +1,55 @@
-import java.io.*;
 import java.util.*;
+import java.io.*;
 
-class Node{
-    int next;
-    int cost;
-    public Node(int next, int cost){
-        this.next = next;
-        this.cost = cost;
+public class Main{
+    static int n;
+    static List<List<int[]>> graph = new ArrayList<>();
+    public static void main(String[] args)throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        
+        n = Integer.parseInt(st.nextToken());
+        int m = Integer.parseInt(st.nextToken());
+        
+        for(int i=0;i<=n;i++){
+            graph.add(new ArrayList<>());
+        }
+        for(int i=1;i<n;i++){
+            st = new StringTokenizer(br.readLine());
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
+            int c = Integer.parseInt(st.nextToken());
+            graph.get(a).add(new int[]{b,c});
+            graph.get(b).add(new int[]{a,c});
+        }
+        
+        StringBuilder sb = new StringBuilder();
+        while(m-->0){
+            st = new StringTokenizer(br.readLine());
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
+            sb.append(bfs(a,b)+"\n");
+        }
+        System.out.println(sb);
     }
-}
-public class Main {
-    static Map<Integer, List<Node>> tree = new HashMap<>();
-
-    public static int bfs(int st, int end, int n){
-        Queue<Node> q = new ArrayDeque<>();
+    
+    static int bfs(int x, int y){
+        Queue<int[]> q = new ArrayDeque<>();
+        q.add(new int[]{x,0});
         boolean[] visited = new boolean[n+1];
-        visited[st] = true;
-        q.add(new Node(st,0));
+        visited[x] = true;
         while(!q.isEmpty()){
-            Node cur = q.remove();
-            if(cur.next == end) return cur.cost;
-            for(Node next:tree.get(cur.next)){
-                if(!visited[next.next]){
-                    visited[next.next] = true;
-                    q.add(new Node(next.next,cur.cost+next.cost));
+            int[] cur = q.poll();
+            if(cur[0]==y) return cur[1];
+            else{
+                for(int[] arr:graph.get(cur[0])){
+                    if(!visited[arr[0]]){
+                        q.add(new int[]{arr[0],cur[1]+arr[1]});
+                        visited[arr[0]] = true;
+                    }
                 }
             }
         }
-        return -1;
-    }
-    public static void main(String[] args) throws IOException{
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine()," ");
-        int N = Integer.parseInt(st.nextToken());
-        int M = Integer.parseInt(st.nextToken());
-
-
-        for(int i=1;i<N;i++){
-            st = new StringTokenizer(br.readLine()," ");
-            int v = Integer.parseInt(st.nextToken());
-            int n = Integer.parseInt(st.nextToken());
-            int c = Integer.parseInt(st.nextToken());
-            tree.putIfAbsent(v, new ArrayList<>());
-            tree.get(v).add(new Node(n,c));
-            tree.putIfAbsent(n, new ArrayList<>());
-            tree.get(n).add(new Node(v,c));
-        }
-
-        while(M-- >0){
-            st = new StringTokenizer(br.readLine()," ");
-            int n1 = Integer.parseInt(st.nextToken());
-            int n2 = Integer.parseInt(st.nextToken());
-
-            System.out.println(bfs(n1,n2,N));
-        }
+        return 0;
     }
 }
-
