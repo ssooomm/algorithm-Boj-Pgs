@@ -1,42 +1,43 @@
 import java.util.*;
+import java.io.*;
 
 public class Main{
-    static List<List<Integer>> res = new ArrayList<>();
-    public static void main(String[] args){
-        Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
-        int m = sc.nextInt();
-        boolean[] visited = new boolean[n];
-        int[] arr = new int[n];
+    static StringBuilder res = new StringBuilder();
+    static int n,m;
+    static int[] arr;
+    static boolean[] visited;
+    public static void main(String[] args)throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
+        st = new StringTokenizer(br.readLine());
+        arr = new int[n];
+        visited = new boolean[n];
         for(int i=0;i<n;i++){
-            arr[i] = sc.nextInt();
+            arr[i] = Integer.parseInt(st.nextToken());
         }
         Arrays.sort(arr);
-        backtrack(n,m,visited, arr, new ArrayList<>());
-        
-        StringBuilder sb = new StringBuilder();
-        for(List<Integer> list:res){
-            for(int i=0;i<m;i++){
-                sb.append(list.get(i)+" ");
-            }
-            sb.append("\n");
-        }
-        System.out.println(sb);
+        backtrack(new ArrayList<>());
+        System.out.println(res);
     }
     
-    static void backtrack(int n, int m, boolean[] visited, int[] arr, List<Integer> list){
+    static void backtrack(List<Integer> list){
         if(list.size()==m){
-            res.add(new ArrayList<>(list));
+            for(int i:list){
+                res.append(i+" ");
+            }
+            res.append("\n");
             return;
         }
         
         for(int i=0;i<n;i++){
             if(!visited[i]){
-                list.add(arr[i]);
                 visited[i] = true;
-                backtrack(n,m,visited, arr, list);
-                list.remove(list.size()-1);
+                list.add(arr[i]);
+                backtrack(list);
                 visited[i] = false;
+                list.remove(list.size()-1);
             }
         }
     }
