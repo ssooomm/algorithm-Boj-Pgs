@@ -4,116 +4,65 @@ public class Main{
     public static void main(String[] args){
         Scanner sc = new Scanner(System.in);
         int t = sc.nextInt();
-
-        for(int i=0;i<t;i++){
-            String coins = "";
-            for(int x=0;x<3;x++){
-                for(int y=0;y<3;y++){
-                    coins += sc.next();
+        while(t-->0){
+            int num=0;
+            for(int i=0;i<3;i++){
+                for(int j=0;j<3;j++){
+                    num = num<<1;
+                    // 앞면1, 뒷면0
+                    if(sc.next().equals("H")){
+                        num+=1;
+                    }
                 }
             }
-            System.out.println(bfs(coins));
+            System.out.println(bfs(num));
         }
     }
-
-    static int bfs(String coins){
-        Map<String,Integer> map = new HashMap<>();
-        Queue<String> q = new ArrayDeque<>();
-        q.add(coins);
-        map.put(coins,0);
-
+    
+    static int bfs(int num){
+        Queue<int[]> q = new ArrayDeque<>();
+        boolean[] visited = new boolean[512]; //2^0 ~ 2^8
+        visited[num] = true;
+        q.add(new int[]{num,0});
+        
         while(!q.isEmpty()){
-            String tmp = q.poll();
-            int cnt = map.get(tmp);
-
-            if(check(tmp)) return cnt;
-
-            String nexts;
-
+            int[] tmp = q.poll();
+            if(tmp[0]==0||tmp[0]==511){
+                return tmp[1];
+            }
+            
             // 행 뒤집기
-            for(int i=0;i<9;i+=3){
-                nexts = flip_row(tmp,i);
-                if(!map.containsKey(nexts)||map.get(nexts)>cnt+1){
-                    map.put(nexts,cnt+1);
-                    q.add(nexts);
+            for(int i=0;i<3;i++){
+                int next = tmp[0]^(448>>(3*i));
+                if(!visited[next]){
+                    visited[next] = true;
+                    q.add(new int[]{next,tmp[1]+1});
                 }
             }
-
+            
             // 열 뒤집기
             for(int i=0;i<3;i++){
-                nexts = flip_col(tmp,i);
-                if(!map.containsKey(nexts)||map.get(nexts)>cnt+1){
-                    map.put(nexts,cnt+1);
-                    q.add(nexts);
+                int next = tmp[0]^(292>>(1*i));
+                if(!visited[next]){
+                    visited[next] = true;
+                    q.add(new int[]{next,tmp[1]+1});
                 }
             }
-
-            // 대각선1
-            nexts = flip_cross1(tmp);
-            if(!map.containsKey(nexts)||map.get(nexts)>cnt+1){
-                map.put(nexts,cnt+1);
-                q.add(nexts);
+            
+            //대각선 256+16+1
+            int next1 = tmp[0]^273;  
+            if(!visited[next1]){
+                visited[next1] = true;
+                q.add(new int[]{next1,tmp[1]+1});
             }
-
-            // 대각선2
-            nexts = flip_cross2(tmp);
-            if(!map.containsKey(nexts)||map.get(nexts)>cnt+1){
-                map.put(nexts,cnt+1);
-                q.add(nexts);
+            
+            //대각선 64+16+4
+            int next2 = tmp[0]^84;  
+            if(!visited[next2]){
+                visited[next2] = true;
+                q.add(new int[]{next2,tmp[1]+1});
             }
         }
         return -1;
-    }
-
-    static String flip_row(String str, int st){
-        StringBuilder coins = new StringBuilder(str);
-        for(int i=st;i<st+3;i++){
-            char coin = coins.charAt(i);
-            coins.deleteCharAt(i);
-            if(coin=='H') coins.insert(i,'T');
-            else coins.insert(i,'H');
-        }
-        return coins.toString();
-    }
-
-    static String flip_col(String str, int st){
-        StringBuilder coins = new StringBuilder(str);
-        for(int i=st;i<9;i+=3){
-            char coin = coins.charAt(i);
-            coins.deleteCharAt(i);
-            if(coin=='H') coins.insert(i,'T');
-            else coins.insert(i,'H');
-        }
-        return coins.toString();
-    }
-
-    static String flip_cross1(String str){
-        StringBuilder coins = new StringBuilder(str);
-        for(int i=0;i<9;i+=4){
-            char coin = coins.charAt(i);
-            coins.deleteCharAt(i);
-            if(coin=='H') coins.insert(i,'T');
-            else coins.insert(i,'H');
-        }
-        return coins.toString();
-    }
-
-    static String flip_cross2(String str){
-        StringBuilder coins = new StringBuilder(str);
-        for(int i=2;i<=6;i+=2){
-            char coin = coins.charAt(i);
-            coins.deleteCharAt(i);
-            if(coin=='H') coins.insert(i,'T');
-            else coins.insert(i,'H');
-        }
-        return coins.toString();
-    }
-
-    static boolean check(String str){
-        char coin = str.charAt(0);
-        for(int i=1;i<9;i++){
-            if(coin != str.charAt(i)) return false;
-        }
-        return true;
     }
 }
