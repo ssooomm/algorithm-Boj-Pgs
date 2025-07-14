@@ -1,68 +1,57 @@
 import java.util.*;
- 
-public class Main {
- 
-    static int n, k;
-    static int max = Integer.MIN_VALUE;
-    static boolean[] visited;
-    static String[] word;
-    
-    public static void main(String[] args) {
-        Scanner scan = new Scanner(System.in);
- 
-        n = scan.nextInt();
-        k = scan.nextInt();
-        
-        scan.nextLine();
-        word = new String[n];
-        for(int i = 0; i < n; i++) {
-            String str = scan.nextLine();
-            str = str.replace("anta", "");
-            str = str.replace("tica", "");
-            word[i] = str;
+
+public class Main{
+    static boolean[] alph = new boolean[26];
+    static String[] words;
+    static int max = 0;
+    static int n,k;
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        n = sc.nextInt();
+        k = sc.nextInt();
+        words = new String[n];
+        for(int i=0;i<n;i++){
+            String str = sc.next();
+            words[i] = str.replace("anta","").replace("tica","");
         }
-        
-        if(k < 5) { //a c i n t의 개수가 5개이므로
-            System.out.println("0");
+        if(k<5){ //a,n,t,i,c
+            System.out.println(0);
             return;
-        } else if(k == 26) { //모든 알파벳을 다 읽을 수 있다.
+        }else if(k==26){ //모든 알파벳 존재 
             System.out.println(n);
             return;
         }
+        char[] ch = new char[]{'a','n','t','i','c'};
+        for(int i=0;i<5;i++){
+            alph[ch[i]-'a'] = true;
+        }
         
-        visited = new boolean[26]; //각 알파벳을 배웠는지 체크
-        visited['a' - 'a'] = true;
-        visited['c' - 'a'] = true;
-        visited['i' - 'a'] = true;
-        visited['n' - 'a'] = true;
-        visited['t' - 'a'] = true;
-        
-        backtracking(0, 0);
+        bt(0,0);
         System.out.println(max);
     }
     
-    public static void backtracking(int alpha, int len) {
-        if(len == k - 5) {
-            int count = 0;
-            for(int i = 0; i < n; i++) { //뽑은 알파벳으로 몇개의 단어를 읽을 수 있는지 카운트.
-                boolean read = true;
-                for(int j = 0; j < word[i].length(); j++) {
-                    if(!visited[word[i].charAt(j) - 'a']) {
-                        read = false;
+    static void bt(int idx,int len){
+        if(len==k-5){
+            int cnt=0;
+            for(String word:words){
+                boolean flag = true;
+                for(int i=0;i<word.length();i++){
+                    char ch = word.charAt(i);
+                    if(!alph[ch-'a']){
+                        flag = false;
                         break;
                     }
                 }
-                if(read) count++;
+                if(flag) cnt++;
             }
-            max = Math.max(max, count);
+            max = Math.max(max,cnt);
             return;
         }
-        
-        for(int i = alpha; i < 26; i++) {
-            if(visited[i] == false) {
-                visited[i] = true;
-                backtracking(i, len + 1);
-                visited[i] = false;
+        for(int i=idx;i<26;i++){
+            if(!alph[i]){
+                alph[i] = true;
+                bt(i+1,len+1);
+                alph[i] = false;
             }
         }
     }
