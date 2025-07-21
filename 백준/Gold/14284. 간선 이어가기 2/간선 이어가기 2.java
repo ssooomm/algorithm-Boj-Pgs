@@ -5,14 +5,14 @@ public class Main{
     static class Node implements Comparable<Node>{
         int n;
         int v;
-        public Node(int n,int v){
+        public Node(int n, int v){
             this.n = n;
             this.v = v;
         }
         
         @Override
         public int compareTo(Node o){
-            return this.v-o.v;
+            return this.v - o.v;
         }
     }
     public static void main(String[] args)throws IOException{
@@ -28,13 +28,12 @@ public class Main{
         
         for(int i=0;i<m;i++){
             st = new StringTokenizer(br.readLine());
-            int e1 = Integer.parseInt(st.nextToken());
-            int e2 = Integer.parseInt(st.nextToken());
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
             int v = Integer.parseInt(st.nextToken());
-            graph.get(e1).add(new Node(e2,v));
-            graph.get(e2).add(new Node(e1,v));
+            graph.get(a).add(new Node(b,v));
+            graph.get(b).add(new Node(a,v));
         }
-        
         st = new StringTokenizer(br.readLine());
         int f = Integer.parseInt(st.nextToken());
         int l = Integer.parseInt(st.nextToken());
