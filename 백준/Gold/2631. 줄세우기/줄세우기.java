@@ -9,18 +9,21 @@ public class Main{
             arr[i] = sc.nextInt();
         }
         
-        int[] dp = new int[n];
-        int max = 0;
+        List<Integer> list = new ArrayList<>();
         for(int i=0;i<n;i++){
-            dp[i] = 1;
-            for(int j=0;j<i;j++){
-                if(arr[i]>arr[j]){
-                    dp[i] = Math.max(dp[i],dp[j]+1);
+            if(list.isEmpty()||arr[i]>list.get(list.size()-1)){
+                list.add(arr[i]);
+            }else{
+                int l = 0, r = list.size()-1;
+                while(l<r){
+                    int mid = (l+r)/2;
+                    if(list.get(mid)<arr[i]) l=mid+1;
+                    else r = mid;
                 }
+                list.set(r,arr[i]);
             }
-            max = Math.max(max,dp[i]);
         }
         
-        System.out.println(n-max);
+        System.out.println(n-list.size());
     }
 }
