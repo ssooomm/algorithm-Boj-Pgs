@@ -1,7 +1,8 @@
-SELECT SUM(SCORE) AS SCORE, G.EMP_NO, E.EMP_NAME, E.POSITION, E.EMAIL
-FROM HR_EMPLOYEES E
-    INNER JOIN HR_GRADE G ON E.EMP_NO = G.EMP_NO
-GROUP BY YEAR, EMP_NO
-HAVING G.YEAR = '2022'
-ORDER BY 1 DESC
-LIMIT 1;
+-- 코드를 작성해주세요
+select sum(score) as score,e.EMP_NO,EMP_NAME,POSITION,EMAIL
+from HR_EMPLOYEES e
+join HR_GRADE g on e.EMP_NO = g.EMP_NO
+where year = '2022'
+group by g.emp_no
+order by score desc
+limit 1;
