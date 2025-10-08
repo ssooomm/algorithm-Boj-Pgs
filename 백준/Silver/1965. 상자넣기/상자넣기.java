@@ -12,14 +12,16 @@ public class Main{
         
         int max = 0;
         for(int i=0;i<n;i++){
-            for(int j=i+1;j<n;j++){
-                if(arr[i]<arr[j]){
-                    dp[j] = Math.max(dp[j],dp[i]+1);
-                    max = Math.max(max,dp[j]);
+            dp[i]=1;
+            for(int j=0;j<i;j++){
+                if(arr[i]>arr[j]){
+                    dp[i] = Math.max(dp[i],dp[j]+1);
+                    
                 }
             }
+            max = Math.max(max,dp[i]);
         }
         
-        System.out.println(max+1);
+        System.out.println(max);
     }
 }
