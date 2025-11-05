@@ -1,6 +1,6 @@
 # [level 1] 역순 정렬하기 - 59035 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/59035) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/59035?language=oracle) 
 
 ### 성능 요약
 
@@ -16,7 +16,7 @@ Empty
 
 ### 제출 일자
 
-2025년 03월 21일 10:17:21
+2025년 11월 05일 15:44:14
 
 ### 문제 설명
 
