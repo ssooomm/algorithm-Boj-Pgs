@@ -1,6 +1,6 @@
 # [level 3] 없어진 기록 찾기 - 59042 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/59042) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/59042?language=oracle) 
 
 ### 성능 요약
 
@@ -16,7 +16,7 @@ Empty
 
 ### 제출 일자
 
-2025년 04월 23일 23:27:34
+2025년 11월 06일 15:09:49
 
 ### 문제 설명
 
