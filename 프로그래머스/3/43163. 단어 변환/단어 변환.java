@@ -4,39 +4,41 @@ class WS{
     int cnt;
     String word;
     WS(int cnt, String word){
-        this.cnt=cnt;
+        this.cnt = cnt;
         this.word = word;
     }
 }
+
 class Solution {
-    
     public int solution(String begin, String target, String[] words) {
-        int answer = 0;
         Queue<WS> q = new ArrayDeque<>();
         q.add(new WS(0,begin));
-        boolean[] visited = new boolean[words.length];
+        boolean[] v = new boolean[words.length];
         
         while(!q.isEmpty()){
-            WS curr = q.remove();
-            if(curr.word.equals(target)) return curr.cnt;
+            WS cur = q.poll();
+            if(cur.word.equals(target)){
+                return cur.cnt;
+            }
             for(int i=0;i<words.length;i++){
-                if(!visited[i] && getDiff(curr.word, words[i])==1){
-                    q.add(new WS(curr.cnt+1, words[i]));
-                    visited[i] = true;
+                if(!v[i] && check(cur.word,words[i])){
+                    v[i] = true;
+                    q.add(new WS(cur.cnt+1,words[i]));
                 }
             }
         }
         
-        
-        return answer;
+        return 0;
     }
     
+   
     
-    public int getDiff(String a, String b){
+    static boolean check(String w, String tmp){
         int cnt=0;
-        for(int i=0;i<a.length();i++){
-            if(a.charAt(i)!=b.charAt(i)) cnt++;
+        for(int i=0;i<w.length();i++){
+            if(w.charAt(i)!=tmp.charAt(i)) cnt++;
+            if(cnt>1) return false;
         }
-        return cnt;
+        return true;
     }
 }
