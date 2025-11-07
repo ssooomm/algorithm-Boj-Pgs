@@ -1,42 +1,58 @@
 import java.util.*;
 
 class Solution {
+    static char[] arr;
     static Set<Integer> set = new HashSet<>();
-    static String[] arr;
-    static boolean[] visited;
+    
     public int solution(String numbers) {
         int answer = 0;
-        arr=numbers.split("");
-        visited = new boolean[numbers.length()];
+        int len = numbers.length();
+        arr = new char[len];
+        for(int i=0;i<len;i++){
+            arr[i] = numbers.charAt(i);
+        }
         
-        for(int i=1;i<=numbers.length();i++){
-            bt(i,"");
+        for(int i=1;i<=len;i++){
+            bt(i,new boolean[len],new ArrayList<>(),arr);
         }
-        for(int x:set){
-            if(isPrime(x)) answer++;
+        
+        for(int n:set){
+            if(isPrime(n)) answer++;
         }
+        
         return answer;
     }
     
-    static void bt(int depth, String str){
-        if(str.length()==depth){
+    void bt(int len,boolean[] v,List<Character> list,char[] arr){
+        if(len==list.size()){
+            String str = "";
+            for(char c:list){
+                str+=c;
+            }
             set.add(Integer.parseInt(str));
+            return;
         }
+
         for(int i=0;i<arr.length;i++){
-            if(!visited[i]){
-                visited[i] = true;
-                bt(depth,str+arr[i]);
-                visited[i] = false;
+            if(!v[i]){
+                v[i] = true;
+                list.add(arr[i]);
+                bt(len,v,list,arr);
+                v[i] = false;
+                list.remove(list.size()-1);
             }
         }
     }
-    
-    static boolean isPrime(int n){
-        if(n==0||n==1) return false;
-        int sq = (int)Math.sqrt(n);
+
+    boolean isPrime(int x){
+        if(x<=1) return false;
+        if(x==2) return true;
+        int sq = (int)Math.sqrt(x);
+
         for(int i=2;i<=sq;i++){
-            if(n%i==0) return false;
+            if(x%i==0) return false;
         }
         return true;
     }
 }
+
