@@ -1,36 +1,35 @@
 import java.util.*;
 
 public class Main{
-    static List<List<Integer>> res = new ArrayList<>();
+    static StringBuilder sb = new StringBuilder();
+    static int n,m;
+    static List<Integer> list = new ArrayList<>();
+    static boolean[] v;
     public static void main(String[] args){
         Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
-        int m = sc.nextInt();
+        n = sc.nextInt();
+        m = sc.nextInt();
+        v = new boolean[n+1];
         
-        boolean[] visited = new boolean[n+1];
-        backtrack(n,m,new ArrayList<>(), visited);
-        
-        StringBuilder sb = new StringBuilder();
-        for(List<Integer> list: res){
-            for(int i=0;i<m;i++){
-                sb.append(list.get(i)+" ");
-            }
-            sb.append("\n");
-        }
+        bt();
         System.out.println(sb);
     }
     
-    static void backtrack(int n, int m, List<Integer> list, boolean[] visited){
+    static void bt(){
         if(list.size()==m){
-            res.add(new ArrayList<>(list));
+            for(int i:list){
+                sb.append(i+" ");
+            }
+            sb.append("\n");
             return;
         }
+        
         for(int i=1;i<=n;i++){
-            if(!visited[i]){
+            if(!v[i]){
+                v[i] = true;
                 list.add(i);
-                visited[i] = true;
-                backtrack(n,m,list,visited);
-                visited[i] = false;
+                bt();
+                v[i] = false;
                 list.remove(list.size()-1);
             }
         }
