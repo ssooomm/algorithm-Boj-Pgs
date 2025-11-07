@@ -1,54 +1,53 @@
 import java.util.*;
 
 class Solution {
-    int[] dr = {0,0,1,-1};
-    int[] dc = {1,-1,0,0};
+    static int[] dx = {1,-1,0,0};
+    static int[] dy = {0,0,1,-1};
     public int[] solution(String[][] places) {
-        int n = places.length;
-        int[] answer = new int[n];
-        for(int i=0;i<n;i++){
+        int[] answer = new int[5];
+        
+        for(int i=0;i<5;i++){
             answer[i] = check(places[i]);
         }
         return answer;
+        
     }
     
     int check(String[] place){
-        for(int r=0;r<5;r++){
-            for(int c=0;c<5;c++){
-                if(place[r].charAt(c)=='P'){
-                    if(!bfs(r,c,place)) return 0;
+        for(int i=0;i<5;i++){
+            for(int j=0;j<5;j++){
+                if(place[i].charAt(j)=='P'){
+                    if(!bfs(i,j,place)) return 0;
                 }
             }
         }
         return 1;
     }
     
-    
-    boolean bfs(int i, int j, String[] place){
-        boolean[][] visited = new boolean[5][5];
+    boolean bfs(int r, int c, String[] place){
         Queue<int[]> q = new ArrayDeque<>();
-        q.add(new int[]{i,j,0});
-        visited[i][j] = true;
-        
+        boolean[][] v= new boolean[5][5];
+        q.add(new int[]{r,c,0});
+        v[r][c] = true;
         
         while(!q.isEmpty()){
-            int[] curr = q.remove();
-            if(curr[2]>=2) continue;
+            int[] cur = q.poll();
+            v[cur[0]][cur[1]] = true;
+            if(cur[2]>=2) continue;
             
-            for(int x=0;x<4;x++){
-                int nr = curr[0] + dr[x];
-                int nc = curr[1] + dc[x];
-                int nd = curr[2] + 1;
-                if(nr>=0&&nr<5&&nc>=0&&nc<5){
-                    if(place[nr].charAt(nc) != 'X' && !visited[nr][nc]){
-                        if(place[nr].charAt(nc)=='P') return false;
-                        q.add(new int[]{nr,nc,nd});
-                        visited[nr][nc] = true;
+            for(int i=0;i<4;i++){
+                int nx = cur[0]+dx[i];
+                int ny = cur[1]+dy[i];
+                int nd = cur[2]+1;
+                if(nx>=0&&nx<5&&ny>=0&&ny<5){
+                    if(!v[nx][ny]&&place[nx].charAt(ny)!='X'){
+                        if(place[nx].charAt(ny)=='P') return false;
+                        q.add(new int[]{nx,ny,nd});
+                        
                     }
                 }
             }
         }
         return true;
-        
     }
 }
