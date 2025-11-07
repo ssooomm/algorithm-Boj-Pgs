@@ -1,29 +1,30 @@
 import java.util.*;
 
 public class Main{
-    static StringBuilder res = new StringBuilder();
+    static StringBuilder sb = new StringBuilder();
     static int n,m;
+    static List<Integer> list = new ArrayList<>();
     public static void main(String[] args){
         Scanner sc = new Scanner(System.in);
         n = sc.nextInt();
         m = sc.nextInt();
         
-        backtrack(new ArrayList<>(),1);
-        System.out.println(res);
+        bt(1);
+        System.out.println(sb);
     }
     
-    static void backtrack(List<Integer> list,int st){
+    static void bt(int st){
         if(list.size()==m){
             for(int i:list){
-                res.append(i+" ");
+                sb.append(i+" ");
             }
-            res.append("\n");
+            sb.append("\n");
             return;
         }
         
         for(int i=st;i<=n;i++){
             list.add(i);
-            backtrack(list,i+1);
+            bt(i+1);
             list.remove(list.size()-1);
         }
     }
