@@ -1,60 +1,64 @@
 import java.util.*;
 
-class Edge implements Comparable<Edge>{
-    int node, cost;
-    public Edge(int node, int cost){
-        this.node = node;
-        this.cost = cost;
+class Node implements Comparable<Node>{
+    int n;
+    int fare;
+    Node(int n, int fare){
+        this.n = n;
+        this.fare = fare;
     }
+    
     @Override
-    public int compareTo(Edge other){
-        return Integer.compare(this.cost, other.cost);
+    public int compareTo(Node o){
+        return this.fare - o.fare;
     }
 }
 class Solution {
-    int INF = Integer.MAX_VALUE;   
+    static List<Node>[] list;
     public int solution(int n, int s, int a, int b, int[][] fares) {
         int answer = 0;
-        Map<Integer,List<Edge>> graph = new HashMap<>();
+        list= new ArrayList[n+1];
         for(int i=1;i<=n;i++){
-            graph.put(i,new ArrayList<>());
+            list[i] = new ArrayList<>();
         }
-        for(int[] fare:fares){
-            graph.get(fare[0]).add(new Edge(fare[1],fare[2]));
-            graph.get(fare[1]).add(new Edge(fare[0],fare[2]));
+        for(int[] f:fares){
+            list[f[0]].add(new Node(f[1],f[2]));
+            list[f[1]].add(new Node(f[0],f[2]));
         }
         
-        int[] sD = dikstra(fares,graph,s,n);
-        int[] aD = dikstra(fares,graph,a,n);
-        int[] bD = dikstra(fares,graph,b,n);
+        int[] sD = dijk(s,n);
+        int[] aD = dijk(a,n);
+        int[] bD = dijk(b,n);
         
-        int minTime = INF;
+        int min=Integer.MAX_VALUE;
         for(int i=1;i<=n;i++){
             int tmp = sD[i]+aD[i]+bD[i];
-            minTime = Math.min(tmp,minTime);
+            min = Math.min(tmp,min);
         }
-        return minTime;
+        
+        
+        return min;
     }
     
-    public int[] dikstra(int[][] fares, Map<Integer,List<Edge>> graph, int st, int n){
-        Queue<Edge> pq = new PriorityQueue<>();
-        pq.add(new Edge(st,0));
-        int[] costs = new int[n+1];
-        Arrays.fill(costs,INF);
-        costs[st] = 0;
+    int[] dijk(int st, int n){
+        Queue<Node> pq = new PriorityQueue<>();
+        pq.add(new Node(st,0));
+        int[] fare = new int[n+1];
+        Arrays.fill(fare,Integer.MAX_VALUE);
+        fare[st] = 0;
         
         while(!pq.isEmpty()){
-            Edge cur = pq.remove();
-            if(cur.cost>costs[cur.node]) continue;
-            for(Edge next: graph.get(cur.node)){
-                int nextCost = costs[cur.node] + next.cost;
-                if(nextCost<costs[next.node]){
-                    costs[next.node] = nextCost;
-                    pq.add(new Edge(next.node,nextCost));
+            Node cur = pq.poll();
+            if(cur.fare>fare[cur.n]) continue;
+            
+            for(Node node:list[cur.n]){
+                int nf = fare[cur.n]+node.fare;
+                if(nf<fare[node.n]){
+                    fare[node.n] = nf;
+                    pq.add(new Node(node.n,nf));
                 }
             }
         }
-        
-        return costs;
+        return fare;
     }
 }
