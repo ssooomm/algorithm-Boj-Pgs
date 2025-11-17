@@ -1,27 +1,32 @@
 import java.util.*;
 
 class Solution {
+    static int sum=0;
+    static int answer=0;
     public int solution(int[] nums) {
-        int answer = 0;
-        int len =nums.length;
-        for(int i=0;i<len-2;i++){
-            for(int j=i+1;j<len-1;j++){
-                for(int k=j+1;k<len;k++){
-                    if(isPrime(nums[i]+nums[j]+nums[k])) answer++;
-                }
-            }
-        }
-        
+
+        bt(nums,0,0);
+
         return answer;
     }
     
-    public boolean isPrime(int n){
-        if(n<=1) return false;
-        if(n==2) return true;
-        if(n%2==0) return false;
-
-        int tmp = (int)Math.sqrt(n);
-        for(int i=3;i<=tmp;i+=2){
+    void bt(int[] nums,int cnt,int st){
+        if(cnt==3){
+            if(isPrime(sum)) answer++;
+            return;
+        }
+        
+        for(int i=st;i<nums.length;i++){
+            sum+=nums[i];
+            bt(nums,cnt+1,i+1);
+            sum-=nums[i];
+        }
+    }
+    
+    boolean isPrime(int n){
+        if(n<2) return false;
+        int sq = (int) Math.sqrt(n);
+        for(int i=2;i<=sq;i++){
             if(n%i==0) return false;
         }
         return true;
