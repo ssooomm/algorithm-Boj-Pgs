@@ -1,12 +1,8 @@
 -- 코드를 입력하세요
 SELECT CART_ID
-FROM CART_PRODUCTS
-WHERE NAME = 'Yogurt'
-AND CART_ID IN (
-    SELECT CART_ID
-    FROM CART_PRODUCTS
-    WHERE NAME = 'Milk'
+from CART_PRODUCTS 
+where name = 'Yogurt'
+and CART_ID in (
+select CART_ID from CART_PRODUCTS where name = 'Milk'
 )
-ORDER BY CART_ID
-
-
+order by CART_ID
