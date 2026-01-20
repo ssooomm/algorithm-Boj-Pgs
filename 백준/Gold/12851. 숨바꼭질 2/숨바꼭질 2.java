@@ -5,44 +5,31 @@ public class Main{
         Scanner sc = new Scanner(System.in);
         int n = sc.nextInt();
         int k = sc.nextInt();
-        int[] arr = new int[100001];
-        Arrays.fill(arr,100001);
+        int[] time = new int[100001];
+        int[] cnt = new int[100001]; //방법의 수
+        Arrays.fill(time,-1);
         Queue<Integer> q = new ArrayDeque<>();
         q.add(n);
-        arr[n]=0;
-        int min = 100001, cnt=0;
+        time[n]=0;
+        cnt[n] = 1; //처음 1가지 방법
+        
         while(!q.isEmpty()){
             int x = q.poll();
-            if(x==k){
-                if(min>arr[x]){
-                    min = arr[x];
-                    cnt=1;
-                }else if(min==arr[x]){
-                    cnt++;
+            int[] next = {x-1,x+1,x*2};
+            for(int ne:next){
+                if(ne<0||ne>100000) continue;
+                
+                if(time[ne]==-1){ //최초
+                    time[ne] = time[x]+1;
+                    cnt[ne] = cnt[x]; //현재위치까지 온 방법의 수 그대로 전달
+                    q.add(ne);
+                }else if(time[ne]==time[x]+1){ //기존 최단 시간 방법과 같은 시간으로 도착하는 경로 추가 존재
+                    cnt[ne]+=cnt[x];
                 }
             }
             
-            if(x-1>=0){
-                if(arr[x-1]>=arr[x]+1){
-                    q.add(x-1);
-                    arr[x-1] = arr[x]+1;
-                }
-            }
-            if(x+1<=100000){
-                if(arr[x+1]>=arr[x]+1){
-                    q.add(x+1);
-                    arr[x+1] = arr[x]+1;
-                }
-            }
-            if(x*2<=100000){
-                if(arr[x*2]>=arr[x]+1){
-                    q.add(x*2);
-                    arr[x*2] = arr[x]+1;
-                }
-            }
-
         }
-        System.out.println(arr[k]);
-        System.out.println(cnt);
+        System.out.println(time[k]);
+        System.out.println(cnt[k]);
     }
 }
