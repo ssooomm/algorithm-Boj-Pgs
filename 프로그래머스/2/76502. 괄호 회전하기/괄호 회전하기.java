@@ -3,35 +3,35 @@ import java.util.*;
 class Solution {
     public int solution(String s) {
         int answer = 0;
-        String str = s+s;
-        
+        String ss = s+s;
         for(int i=0;i<s.length();i++){
-            if(check(str.substring(i,s.length()+i))) answer++;
+            if(check(ss.substring(i,i+s.length()))){
+                answer++;
+            }
         }
-        
         return answer;
     }
     
-    boolean check(String str){
-        Deque<Character> stack = new ArrayDeque<>();
+    boolean check(String s){
+        Deque<Character> q = new ArrayDeque<>();
         
-        for(int i=0;i<str.length();i++){
-            char ch = str.charAt(i);
-            if(ch=='('||ch=='{'||ch=='['){
-                stack.push(ch);
-            }else{
-                if(stack.isEmpty()) return false;
-                
-                if(ch==')'&&stack.peek()=='(')
-                    stack.pop();
-                else if(ch=='}'&&stack.peek()=='{')
-                    stack.pop();
-                else if(ch==']'&&stack.peek()=='[')
-                    stack.pop();
-                else return false;
+        for(int i=0;i<s.length();i++){
+            if(s.charAt(i)=='['||s.charAt(i)=='{'||s.charAt(i)=='('){
+                q.push(s.charAt(i));
+                continue;
+            }
+            if(q.isEmpty()) return false;
+            if(s.charAt(i)==']'){
+                if(q.peek()=='[') q.pop();
+            }
+            else if(s.charAt(i)=='}'){
+                if(q.peek()=='{') q.pop();
+            }
+            else if(s.charAt(i)==')'){
+                if(q.peek()=='(') q.pop();
             }
         }
-        if(stack.isEmpty()) return true;
+        if(q.isEmpty()) return true;
         else return false;
     }
 }
