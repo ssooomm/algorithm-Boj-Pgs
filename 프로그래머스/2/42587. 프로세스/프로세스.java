@@ -1,29 +1,28 @@
+import java.util.*;
+
 class Solution {
     public int solution(int[] priorities, int location) {
-        int answer = 0;
+        int answer = 1;
+        int[] copy = Arrays.copyOf(priorities,priorities.length);
+        Arrays.sort(copy);
         
-        int[] rank = new int[priorities.length];
-        int ranking = 1;
-        int max = 0, max_i = 0;
-        int cnt = 0;
-        int start = 0;
-        while (cnt<priorities.length) {
-            max = 0;
-            for(int i=0;i<priorities.length;i++){
-                if(max<priorities[start]){
-                    max = priorities[start];
-                    max_i = start;
-                }
-                start++;
-                start %= priorities.length;
-            }
-            rank[max_i] = ranking++;
-            priorities[max_i] = 0;
-            start = max_i;
-            cnt++;
+        Queue<int[]> q = new ArrayDeque<>();
+        for(int i=0;i<priorities.length;i++){
+            q.add(new int[]{i,priorities[i]});
         }
         
-        answer = rank[location];
+        int x = priorities.length-1;
+        while(!q.isEmpty()){
+            int[] tmp = q.poll();
+            if(tmp[1]==copy[x]){
+                if(tmp[0]==location) return answer;
+                x--;
+                answer++;
+            }
+            else{
+                q.add(tmp);
+            }
+        }
         return answer;
     }
 }
