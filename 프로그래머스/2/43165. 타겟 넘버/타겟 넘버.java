@@ -1,16 +1,19 @@
 class Solution {
+    static int cnt=0;
     public int solution(int[] numbers, int target) {
-        return dfs(0,target, numbers, 0);
+        bt(0,numbers[0],target,numbers);
+        bt(0,-numbers[0],target,numbers);
+        return cnt;
     }
     
-    int dfs(int curr, int target, int[] numbers, int idx){
-        int cnt=0;
-        if(idx==numbers.length){
-            if(curr==target) return 1;
-            else return 0;
+    static void bt(int i,int sum,int target,int[] numbers){
+        if(i==numbers.length-1){
+            if(sum==target)
+                cnt++;
+            return;
         }
-        cnt+=dfs(curr+numbers[idx], target, numbers, idx+1);
-        cnt+=dfs(curr-numbers[idx], target, numbers, idx+1);
-        return cnt;
+
+        bt(i+1,sum+numbers[i+1],target,numbers);
+        bt(i+1,sum-numbers[i+1],target,numbers);
     }
 }
