@@ -1,6 +1,6 @@
 # [level 2] NULL 처리하기 - 59410 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/59410?language=oracle) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/59410) 
 
 ### 성능 요약
 
@@ -16,7 +16,7 @@ Empty
 
 ### 제출 일자
 
-2025년 11월 05일 15:23:19
+2026년 02월 21일 10:50:33
 
 ### 문제 설명
 
