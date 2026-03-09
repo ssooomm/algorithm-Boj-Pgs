@@ -1,45 +1,40 @@
 import java.util.*;
-import java.io.*;
 
 public class Main{
-    public static void main(String[] args)throws IOException{
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        int n = Integer.parseInt(st.nextToken());
-        int h = Integer.parseInt(st.nextToken());
-        
-        int[] f = new int[h+1];
-        int[] s = new int[h+1];
-        
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int h = sc.nextInt();
+        int[] arr = new int[h];
+        int[] arr1 = new int[h];
+        int[] arr2 = new int[h];
         for(int i=0;i<n;i++){
-            int x = Integer.parseInt(br.readLine());
+            int x = sc.nextInt();
             if(i%2==0){
-                f[h-x+1]++;
+                arr1[h-x]++;
             }else{
-                s[x]++;
+                arr2[x-1]++;
             }
         }
-        
-        for (int i=h-1; i>=1; i--) {
-            s[i]+=s[i+1];
+        for(int i=1;i<h;i++){
+            arr1[i]+=arr1[i-1];
         }
-        for(int i=2; i<=h; i++){
-            f[i]+=f[i-1];
+        for(int i=h-2;i>=0;i--){
+            arr2[i]+=arr2[i+1];
         }
         
-        
-        int res = Integer.MAX_VALUE;
-        int cnt = 0;
-        for(int i=1;i<=h;i++){
-            int tmp = f[i]+s[i];
-            if(res>tmp){
-                res = tmp;
-                cnt = 1;
-            }
-            else if(res==tmp){
+        int min = Integer.MAX_VALUE,cnt=0;
+        for(int i=0;i<h;i++){
+            arr[i]=arr1[i]+arr2[i];
+            if(arr[i]<min){
+                min=arr[i];
+                cnt=1;
+            }else if(arr[i]==min){
                 cnt++;
             }
         }
-        System.out.println(res+" "+cnt);
+        
+        System.out.println(min+" "+cnt);
+        
     }
 }
