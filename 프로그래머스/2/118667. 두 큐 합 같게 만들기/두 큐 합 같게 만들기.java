@@ -3,60 +3,43 @@ import java.util.*;
 class Solution {
     public int solution(int[] queue1, int[] queue2) {
         int answer = 0;
-        int n = queue1.length;
-        long[] merged = new long[n * 2];
 
-        for (int i = 0; i < n; i++) {
-            merged[i] = queue1[i];
+        Queue<Integer> q1 = new ArrayDeque<>();
+        Queue<Integer> q2 = new ArrayDeque<>();
+        int cnt1 = queue1.length;
+        int cnt2 = queue2.length;
+        long sum1 = 0;
+        long sum2 = 0;
+        
+        for(int q:queue1){
+            sum1+=q;
+            q1.add(q);
         }
-        for (int i = 0; i < n; i++) {
-            merged[n + i] = queue2[i];
+        for(int q:queue2){
+            sum2+=q;
+            q2.add(q);
         }
-
-        long q1Sum = Arrays.stream(queue1).sum();
-        long q2Sum = Arrays.stream(queue2).sum();
-
-        //모든 원소의 합이 홀수면 안됨
-        //두 큐의 합이 같아질 수 없기 때문에
-        if ((q1Sum + q2Sum) % 2 != 0) {
-            return -1;
-        }
-
-        long target = (q1Sum + q2Sum) / 2; //만들고자 하는 합
-
-        //q1꺼
-        int l1 = 0;
-        int r1 = n - 1;
-
-        //q2꺼
-        int l2 = n;
-        int r2 = n * 2 - 1;
-
-        //배열 모두 탐색하면 종료
-        //answer는 모두 탐색하는 경우 보다는 적어야함
-        while (answer < 4 * n) {
-            if (q1Sum < target) {
-                r1 = (r1 + 1) % merged.length;
-                l2 = (l2 + 1) % merged.length;
-                q1Sum += merged[r1];
-                q2Sum -= merged[r1];
-                
+        
+        while(cnt1>0||cnt2>0){
+            if(sum1>sum2){
+                int x = q1.poll();
+                cnt1--;
+                q2.add(x);
+                sum1-=x;
+                sum2+=x;
                 answer++;
             }
-            if (q2Sum < target) {
-                r2 = (r2 + 1) % merged.length;
-                l1 = (l1 + 1) % merged.length;
-                
-                q2Sum += merged[r2];
-                q1Sum -= merged[r2];
-                
+            else if(sum1<sum2){
+                int x = q2.poll();
+                cnt2--;
+                q1.add(x);
+                sum1+=x;
+                sum2-=x;
                 answer++;
             }
-            
-            if(q1Sum == target && q2Sum == target) {
-                break;
-            }
+            if(sum1==sum2) return answer;
         }
-        return q1Sum == q2Sum ? answer : -1;
+        
+        return -1;
     }
 }
