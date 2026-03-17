@@ -1,53 +1,26 @@
 import java.util.*;
+
 class Solution {
     public int solution(int bridge_length, int weight, int[] truck_weights) {
-        int answer = 0;
-                Queue<Integer> queue = new LinkedList<>();
-
-        int time = 0;
-        int total_w = 0;
-        int i=0;
-        while(i<truck_weights.length){
-//            if (queue.size() < bridge_length) {
-//                if (total_w + truck_weights[i] <= weight) {
-//                    queue.add(truck_weights[i]);
-//                    total_w += truck_weights[i];
-//                    i++;
-//                    time++;
-//                } else {
-//                    queue.add(0);
-//                    time++;
-//                }
-//            } else {
-//                int tmp = queue.poll();
-//                total_w -= tmp;
-//                queue.add(truck_weights[i]);
-//                total_w += truck_weights[i];
-//                i++;
-//                time++;
-//            }
-
-            if (queue.size() >= bridge_length) {
-                int tmp = queue.poll();
-                total_w -= tmp;
+        int n = truck_weights.length;
+        int[] in = new int[n];
+        Queue<Integer> q = new ArrayDeque<>();
+        
+        int sum=0;
+        int time=0;
+        
+        for(int i=0;i<n;i++){
+            while(!q.isEmpty()&&sum+truck_weights[i]>weight){
+                int idx=q.poll();
+                sum-=truck_weights[idx];
+                time = Math.max(time,in[idx]+bridge_length);
             }
-            if (total_w + truck_weights[i] <= weight) {
-                queue.add(truck_weights[i]);
-                total_w += truck_weights[i];
-                i++;
-                time++;
-            } else {
-                queue.add(0);
-                time++;
-            }
-
+            
+            q.add(i);
+            in[i] = time++;
+            sum+=truck_weights[i];
         }
-
-        if(queue.size()>0){
-            time+=bridge_length;
-        }
-
-        answer = time;
-        return answer;
+        
+        return time+bridge_length;
     }
 }
