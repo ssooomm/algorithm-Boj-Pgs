@@ -12,16 +12,18 @@ public class Main{
             arr[i] = Integer.parseInt(st.nextToken());
         }
         Arrays.sort(arr);
-        int[] dif = new int[n-1];
-        for(int i=0;i<n-1;i++){
-            dif[i] = arr[i+1]-arr[i];
-        }
-        Arrays.sort(dif);
         
-        int res=0;
-        for(int i=0;i<n-k;i++){
-            res+=dif[i];
+        int[] diff = new int[n-1];
+        for(int i=0;i<n-1;i++){
+            diff[i] = arr[i+1]-arr[i];
         }
-        System.out.println(res);
+        Arrays.sort(diff);
+        
+        int sum=0;
+        for(int i=0;i<n-k;i++){
+            sum+=diff[i];
+        }
+        
+        System.out.println(sum);
     }
 }
