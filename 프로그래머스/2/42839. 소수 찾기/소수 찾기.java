@@ -1,44 +1,43 @@
 import java.util.*;
 
 class Solution {
-    static Set<Integer> hs = new HashSet<>();
-    static boolean[] v;
+    static Set<Integer> set = new HashSet<>();
+    
     public int solution(String numbers) {
         int answer = 0;
-        String[] arr = numbers.split("");
-        v = new boolean[arr.length];
-        for(int i=1;i<=arr.length;i++){
-            bt(i,"",arr);
+        
+        String[] nums = numbers.split("");
+        for(int i=1;i<=nums.length;i++){
+            bt("",i,new boolean[nums.length],nums);
         }
         
-        for(int i:hs){
-            if(isPrime(i)) answer++;
+        for(int num:set){
+            if(prime(num)) answer++;
         }
+        
         return answer;
-        
     }
     
-    void bt(int len,String str,String[] arr){
-        if(str.length()==len){
-            hs.add(Integer.parseInt(str));
+    void bt(String str,int n,boolean[] v,String[] nums){
+        if(str.length()==n){
+            set.add(Integer.parseInt(str));
             return;
         }
-        
-        for(int i=0;i<arr.length;i++){
+        for(int i=0;i<nums.length;i++){
             if(!v[i]){
                 v[i] = true;
-                bt(len,str+arr[i],arr);
-                v[i] = false;
+                bt(str+nums[i],n,v,nums);
+                v[i]=false;
             }
         }
     }
     
-    boolean isPrime(int n){
-        if(n<2) return false;
-        int sq = (int)Math.sqrt(n);
-        
+    boolean prime(int x){
+        if(x<2) return false;
+        if(x==2) return true;
+        int sq = (int)Math.sqrt(x);
         for(int i=2;i<=sq;i++){
-            if(n%i==0) return false;
+            if(x%i==0) return false;
         }
         return true;
     }
