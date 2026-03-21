@@ -1,41 +1,50 @@
 import java.util.*;
 
 class Solution {
+    static int cnt=0;
+    static List<Integer>[] list;
+    static boolean[] v;
     public int solution(int n, int[][] wires) {
         int answer = Integer.MAX_VALUE;
         
-        Map<Integer,List<Integer>> graph = new HashMap<>();
-        
-        
-        for(int i=0;i<n-1;i++){
-            for(int a=1;a<=n;a++){
-                graph.put(a,new ArrayList<>());
-            }
-            for(int j=0;j<n-1;j++){
-                if(i==j) continue;
-                graph.get(wires[j][0]).add(wires[j][1]);
-                graph.get(wires[j][1]).add(wires[j][0]);
-            }
-            // System.out.println(graph);
-            // boolean[] visited = new boolean[n+1];
-            Set<Integer> visited = new HashSet<>();
-            dfs(graph, wires[i][0], visited);
-            int x = visited.size();
-            visited.clear();
-            dfs(graph, wires[i][1], visited);
-            int y = visited.size();
-            int tmp = Math.abs(x-y);
-            answer = Math.min(tmp, answer);
+        list = new ArrayList[n+1];
+        v = new boolean[n+1];
+        for(int i=0;i<=n;i++){
+            list[i] = new ArrayList<>();
         }
+        for(int[] w:wires){
+            list[w[0]].add(w[1]);
+            list[w[1]].add(w[0]);
+        }
+        
+        for(int[] w:wires){
+            cnt=0;
+            Arrays.fill(v,false);
+            v[w[0]] = true;
+            v[w[1]] = true;
+            dfs(w[0]);
+            int a = cnt;
+            cnt=0;
+            Arrays.fill(v,false);
+            v[w[0]] = true;
+            v[w[1]] = true;
+            dfs(w[1]);
+            int b = cnt;
+            answer = Math.min(answer,Math.abs(a-b));
+            
+        }
+        
         return answer;
     }
     
-    void dfs(Map<Integer,List<Integer>> graph, int curr, Set<Integer> visited){
-        visited.add(curr);
-        for(Integer g:graph.get(curr)){
-            if(!visited.contains(g)){
-                dfs(graph, g, visited);
+    void dfs(int x){
+        for(int i:list[x]){
+            if(!v[i]){
+                v[i] = true;
+                cnt++;
+                dfs(i);
             }
         }
+        return;
     }
 }
