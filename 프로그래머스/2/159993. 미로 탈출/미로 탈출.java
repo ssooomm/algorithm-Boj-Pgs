@@ -1,75 +1,72 @@
 import java.util.*;
 
 class Solution {
-    int[] dr = {0,0,1,-1};
-    int[] dc = {1,-1,0,0};
+    static int[] dx = {1,-1,0,0};
+    static int[] dy = {0,0,1,-1};
+    static int answer=0,r,c;
+    static char[][] map;
+    static boolean[][] v;
     
     public int solution(String[] maps) {
-        int answer = 0;
-        int n = maps.length;
-        int m = maps[0].length();
+        r = maps.length;
+        c = maps[0].length();
+        map = new char[r][c];
+        v = new boolean[r][c];
         
+        int[] s = new int[2];
+        int[] l = new int[2];
+        int[] e = new int[2];
+        
+        for(int i=0;i<r;i++){
+            for(int j=0;j<c;j++){
+                map[i][j] = maps[i].charAt(j);
+                if(map[i][j]=='S'){
+                    s[0] = i;
+                    s[1] = j;
+                }
+                else if(map[i][j]=='L'){
+                    l[0] = i;
+                    l[1] = j;
+                }
+                else if(map[i][j]=='E'){
+                    e[0] = i;
+                    e[1] = j;
+                }
+            }
+        }
+        
+        int cnt = bfs(s,l);
+        if(cnt==-1) return -1;
+        else answer+=cnt;
+        
+        v = new boolean[r][c];
+        cnt=bfs(l,e);
+        if(cnt==-1) return -1;
+        else answer+=cnt;
+        
+        return answer;
+    }
+    
+    int bfs(int[] st, int[] end){
         Queue<int[]> q = new ArrayDeque<>();
-        boolean[][] visited = new boolean[n][m];
+        q.add(new int[]{st[0],st[1],0});
+        v[st[0]][st[1]] = true;
         
-        for(int r=0;r<n;r++){
-            for(int c=0;c<m;c++){
-                if(maps[r].charAt(c)=='S'){
-                    q.add(new int[]{r,c,0});
-                    visited[r][c] = true;
-                }
-            }
-        }
-        
-        int toL = 0, toLR=0, toLC=0;
         while(!q.isEmpty()){
-            int[] cur = q.remove();
-            int r = cur[0];
-            int c= cur[1];
-            int d = cur[2];
-            if(maps[r].charAt(c)=='L'){
-                toL += d;
-                toLR = r;
-                toLC = c;
-                break;
+            int[] cur = q.poll();
+            if(cur[0]==end[0]&&cur[1]==end[1]){
+                return cur[2];
             }
             for(int i=0;i<4;i++){
-                int nr = r+dr[i];
-                int nc = c+dc[i];
-                if(nr>=0&&nr<n&&nc>=0&&nc<m&&!visited[nr][nc]&&maps[nr].charAt(nc)!='X'){
-                    visited[nr][nc] = true;
-                    q.add(new int[]{nr,nc,d+1});
+                int nx = cur[0]+dx[i];
+                int ny = cur[1]+dy[i];
+                if(nx<0||nx>=r||ny<0||ny>=c) continue;
+                if(map[nx][ny]!='X'&&!v[nx][ny]){
+                    v[nx][ny] = true;
+                    q.add(new int[]{nx,ny,cur[2]+1});
                 }
             }
         }
-        if(toL==0) return -1;
-        
-        q = new ArrayDeque<>();
-        visited = new boolean[n][m];
-        q.add(new int[]{toLR,toLC,0});
-        visited[toLR][toLC] = true;
-        
-        int toE=0;
-        while(!q.isEmpty()){
-            int[] cur = q.remove();
-            int r = cur[0];
-            int c= cur[1];
-            int d = cur[2];
-            if(maps[r].charAt(c)=='E'){
-                toE += d;
-                break;
-            }
-            for(int i=0;i<4;i++){
-                int nr = r+dr[i];
-                int nc = c+dc[i];
-                if(nr>=0&&nr<n&&nc>=0&&nc<m&&!visited[nr][nc]&&maps[nr].charAt(nc)!='X'){
-                    visited[nr][nc] = true;
-                    q.add(new int[]{nr,nc,d+1});
-                }
-            }
-        }
-        if(toE==0) return -1;
-        
-        return toL+toE;
+        return -1;
     }
 }
